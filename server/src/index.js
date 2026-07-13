@@ -12,8 +12,13 @@ import {
 } from "./data.js";
 
 const app = express();
-app.use(cors());
+const allowedOrigin = process.env.CLIENT_ORIGIN || "*";
+app.use(cors({ origin: allowedOrigin }));
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.json({ status: "ok", service: "RailOne API" });
+});
 
 app.get("/api/stations", (req, res) => {
   res.json(stations);

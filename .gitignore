@@ -4,6 +4,7 @@ dist-ssr/
 *.local
 .env
 .env.*
+!.env.example
 npm-debug.log*
 .vscode/*
 !.vscode/extensions.json
