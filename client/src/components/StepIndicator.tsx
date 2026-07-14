@@ -16,7 +16,11 @@ export default function StepIndicator({ steps, current }: { steps: string[]; cur
             >
               {i + 1}
             </motion.div>
-            <span className={`text-xs ${i <= current ? "font-semibold text-rail-blue" : "text-gray-400"}`}>
+            <span
+              className={`max-w-[4.5rem] text-center text-[11px] leading-tight sm:text-xs ${
+                i <= current ? "font-semibold text-rail-blue" : "text-gray-400"
+              }`}
+            >
               {step}
             </span>
           </div>

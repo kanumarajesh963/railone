@@ -15,7 +15,10 @@ export default function Navbar() {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 bg-rail-blue text-white shadow-lg">
+    <header
+      className="sticky top-0 z-50 bg-rail-blue text-white shadow-lg"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg" onClick={() => setOpen(false)}>
           <motion.span
@@ -54,7 +57,7 @@ export default function Navbar() {
         </nav>
 
         <button
-          className="md:hidden"
+          className="flex h-11 w-11 items-center justify-center md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle navigation"
         >

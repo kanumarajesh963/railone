@@ -167,14 +167,16 @@ export default function UtsBooking() {
           <div className="mt-1 flex items-center gap-3">
             <button
               onClick={() => setPassengers((n) => Math.max(1, n - 1))}
-              className="rounded-full border border-gray-300 p-2 hover:bg-gray-50"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-50"
+              aria-label="Decrease passengers"
             >
               <Minus size={14} />
             </button>
             <span className="w-6 text-center font-semibold">{passengers}</span>
             <button
               onClick={() => setPassengers((n) => Math.min(10, n + 1))}
-              className="rounded-full border border-gray-300 p-2 hover:bg-gray-50"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-50"
+              aria-label="Increase passengers"
             >
               <Plus size={14} />
             </button>

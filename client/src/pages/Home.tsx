@@ -95,14 +95,16 @@ export default function Home() {
               </label>
 
               <div className="flex items-end justify-center pb-2 sm:pb-0">
-                <button
+                <motion.button
                   type="button"
                   onClick={swap}
-                  className="rounded-full border border-gray-300 p-2 text-gray-500 transition hover:rotate-180 hover:border-rail-blue hover:text-rail-blue"
+                  whileTap={{ rotate: 180 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-gray-500 transition hover:border-rail-blue hover:text-rail-blue sm:h-9 sm:w-9"
                   aria-label="Swap stations"
                 >
-                  <ArrowLeftRight size={16} />
-                </button>
+                  <ArrowLeftRight size={16} className="rotate-90 sm:rotate-0" />
+                </motion.button>
               </div>
 
               <label className="block">

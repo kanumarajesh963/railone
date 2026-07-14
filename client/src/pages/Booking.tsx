@@ -73,7 +73,7 @@ export default function Booking() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8">
+    <div className="mx-auto max-w-2xl px-4 py-8 pb-28 sm:pb-8">
       {train && (
         <div className="mb-6 rounded-2xl bg-white p-4 shadow-sm">
           <p className="font-semibold text-rail-blue">
@@ -102,48 +102,52 @@ export default function Booking() {
             className="space-y-4"
           >
             {passengers.map((p, i) => (
-              <div key={i} className="flex flex-wrap items-end gap-3 rounded-xl border border-gray-200 bg-white p-4">
-                <label className="flex-1">
-                  <span className="text-xs font-semibold text-gray-500">Full Name</span>
-                  <input
-                    value={p.name}
-                    onChange={(e) => updatePassenger(i, { name: e.target.value })}
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
-                    placeholder="Passenger name"
-                  />
-                </label>
-                <label className="w-20">
-                  <span className="text-xs font-semibold text-gray-500">Age</span>
-                  <input
-                    type="number"
-                    min={1}
-                    max={120}
-                    value={p.age}
-                    onChange={(e) => updatePassenger(i, { age: Number(e.target.value) })}
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
-                  />
-                </label>
-                <label className="w-24">
-                  <span className="text-xs font-semibold text-gray-500">Gender</span>
-                  <select
-                    value={p.gender}
-                    onChange={(e) => updatePassenger(i, { gender: e.target.value })}
-                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
-                  >
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="O">Other</option>
-                  </select>
-                </label>
-                {passengers.length > 1 && (
-                  <button
-                    onClick={() => removePassenger(i)}
-                    className="rounded-lg border border-red-200 p-2 text-red-500 hover:bg-red-50"
-                    aria-label="Remove passenger"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                )}
+              <div key={i} className="rounded-xl border border-gray-200 bg-white p-4">
+                <div className="flex items-end gap-2">
+                  <label className="flex-1">
+                    <span className="text-xs font-semibold text-gray-500">Full Name</span>
+                    <input
+                      value={p.name}
+                      onChange={(e) => updatePassenger(i, { name: e.target.value })}
+                      className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+                      placeholder="Passenger name"
+                    />
+                  </label>
+                  {passengers.length > 1 && (
+                    <button
+                      onClick={() => removePassenger(i)}
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-red-200 text-red-500 hover:bg-red-50"
+                      aria-label="Remove passenger"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  )}
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:flex sm:items-end">
+                  <label className="sm:w-20">
+                    <span className="text-xs font-semibold text-gray-500">Age</span>
+                    <input
+                      type="number"
+                      min={1}
+                      max={120}
+                      value={p.age}
+                      onChange={(e) => updatePassenger(i, { age: Number(e.target.value) })}
+                      className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+                    />
+                  </label>
+                  <label className="sm:w-24">
+                    <span className="text-xs font-semibold text-gray-500">Gender</span>
+                    <select
+                      value={p.gender}
+                      onChange={(e) => updatePassenger(i, { gender: e.target.value })}
+                      className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+                    >
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                      <option value="O">Other</option>
+                    </select>
+                  </label>
+                </div>
               </div>
             ))}
 
@@ -175,12 +179,18 @@ export default function Booking() {
 
             {error && <p className="text-sm font-medium text-red-600">{error}</p>}
 
-            <button
-              onClick={() => validatePassengers() && setStep(1)}
-              className="w-full rounded-lg bg-rail-blue py-3 font-semibold text-white transition hover:brightness-110"
+            <div className="h-2 sm:hidden" />
+            <div
+              className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white p-4 sm:static sm:border-0 sm:bg-transparent sm:p-0"
+              style={{ paddingBottom: "max(env(safe-area-inset-bottom), 1rem)" }}
             >
-              Continue to review
-            </button>
+              <button
+                onClick={() => validatePassengers() && setStep(1)}
+                className="mx-auto w-full max-w-2xl rounded-lg bg-rail-blue py-3 font-semibold text-white transition hover:brightness-110"
+              >
+                Continue to review
+              </button>
+            </div>
           </motion.div>
         )}
 
