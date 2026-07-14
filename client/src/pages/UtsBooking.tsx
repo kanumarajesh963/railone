@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import QRCode from "react-qr-code";
-import { Minus, Plus, Ticket, Zap } from "lucide-react";
+import { Check, Minus, Plus, Share2, Ticket, Zap } from "lucide-react";
 import { bookUtsTicket, fetchStations } from "../lib/api";
 import type { Station, UtsTicket } from "../lib/types";
 
@@ -14,6 +14,7 @@ export default function UtsBooking() {
   const [loading, setLoading] = useState(false);
   const [ticket, setTicket] = useState<UtsTicket | null>(null);
   const [error, setError] = useState("");
+  const [shared, setShared] = useState(false);
 
   useEffect(() => {
     fetchStations().then(setStations).catch(() => setError("Could not load stations"));
@@ -37,6 +38,22 @@ export default function UtsBooking() {
     }
   }
 
+  async function handleShare() {
+    if (!ticket) return;
+    const text = `RailOne UTS Ticket\nID: ${ticket.ticketId}\n${ticket.fromStation} → ${ticket.toStation}\nPassengers: ${ticket.passengers} · Total Fare: ₹${ticket.totalFare}\nValid: ${ticket.validMinutes} min`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "RailOne UTS Ticket", text });
+      } catch {
+        // user cancelled share sheet, no action needed
+      }
+    } else {
+      await navigator.clipboard.writeText(text);
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+    }
+  }
+
   if (ticket) {
     return (
       <div className="mx-auto max-w-md px-4 py-10">
@@ -46,11 +63,20 @@ export default function UtsBooking() {
           transition={{ type: "spring", stiffness: 200, damping: 16 }}
           className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl"
         >
-          <div className="bg-rail-green px-5 py-4 text-white">
-            <p className="flex items-center gap-2 font-semibold">
-              <Ticket size={18} /> UTS {ticket.ticketType === "platform" ? "Platform" : "Unreserved"} Ticket
-            </p>
-            <p className="text-sm text-white/80">Ticket ID: {ticket.ticketId}</p>
+          <div className="flex items-center justify-between bg-rail-green px-5 py-4 text-white">
+            <div>
+              <p className="flex items-center gap-2 font-semibold">
+                <Ticket size={18} /> UTS {ticket.ticketType === "platform" ? "Platform" : "Unreserved"} Ticket
+              </p>
+              <p className="text-sm text-white/80">Ticket ID: {ticket.ticketId}</p>
+            </div>
+            <button
+              onClick={handleShare}
+              aria-label="Share ticket"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15 hover:bg-white/25"
+            >
+              {shared ? <Check size={18} /> : <Share2 size={18} />}
+            </button>
           </div>
           <div className="p-5">
             <div className="flex items-center justify-between text-sm">
@@ -79,6 +105,9 @@ export default function UtsBooking() {
             </motion.div>
           </div>
         </motion.div>
+        {shared && !navigator.share && (
+          <p className="mt-2 text-center text-xs font-medium text-rail-green">Ticket details copied to clipboard</p>
+        )}
         <button
           onClick={() => setTicket(null)}
           className="mt-4 w-full rounded-lg border border-rail-blue py-3 font-semibold text-rail-blue hover:bg-rail-blue/5"
@@ -164,7 +193,7 @@ export default function UtsBooking() {
 
         <div>
           <span className="text-xs font-semibold text-gray-500">PASSENGERS</span>
-          <div className="mt-1 flex items-center gap-3">
+          <div className="mt-1 flex items-center justify-between">
             <button
               onClick={() => setPassengers((n) => Math.max(1, n - 1))}
               className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-50"
@@ -172,7 +201,7 @@ export default function UtsBooking() {
             >
               <Minus size={14} />
             </button>
-            <span className="w-6 text-center font-semibold">{passengers}</span>
+            <span className="text-lg font-semibold">{passengers}</span>
             <button
               onClick={() => setPassengers((n) => Math.min(10, n + 1))}
               className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-50"
