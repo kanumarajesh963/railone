@@ -43,14 +43,14 @@ export default function LiveStatus() {
         </span>
         <h1 className="text-2xl font-bold text-rail-blue">Live Train Status</h1>
       </div>
-      <p className="text-gray-500">Track real-time running status and delays</p>
+      <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Track real-time running status and delays</p>
 
       <form onSubmit={handleSearch} className="mt-6 flex gap-2">
         <input
           value={trainNumber}
           onChange={(e) => setTrainNumber(e.target.value.replace(/\D/g, ""))}
           placeholder="Enter train number"
-          className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-rail-blue focus:outline-none"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-3 focus:border-rail-blue focus:outline-none"
         />
         <motion.button whileTap={{ scale: 0.95 }} className="flex items-center gap-2 rounded-lg bg-rail-blue px-5 py-3 font-semibold text-white">
           {loading ? (
@@ -69,7 +69,7 @@ export default function LiveStatus() {
           <button
             key={n}
             onClick={() => handleSearch(undefined, n)}
-            className="rounded-full border border-gray-300 px-3 py-1 text-xs text-gray-500 hover:border-rail-blue hover:text-rail-blue"
+            className="rounded-full border border-gray-300 dark:border-gray-600 px-3 py-1 text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:border-rail-blue hover:text-rail-blue"
           >
             #{n}
           </button>
@@ -86,7 +86,7 @@ export default function LiveStatus() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+          className="mt-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm"
         >
           <div className="flex items-center justify-between">
             <p className="font-semibold text-rail-blue">
@@ -101,16 +101,16 @@ export default function LiveStatus() {
             </span>
           </div>
 
-          <div className="relative mt-8 pl-6">
-            <div className="absolute left-[7px] top-2 h-[calc(100%-16px)] w-0.5 bg-gray-200" />
+          <div className="relative mt-8">
+            <div className="absolute left-[14px] top-2 bottom-2 w-0.5 -translate-x-1/2 bg-gray-200 dark:bg-gray-700" />
             <motion.div
-              className="absolute left-[7px] top-2 w-0.5 bg-rail-orange"
+              className="absolute left-[14px] top-2 w-0.5 -translate-x-1/2 bg-rail-orange"
               initial={{ height: 0 }}
               animate={{ height: `calc(${progress}% - 16px)` }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             />
             <motion.div
-              className="absolute -left-[7px] flex h-6 w-6 items-center justify-center rounded-full bg-rail-orange text-white shadow-md"
+              className="absolute left-[14px] flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full bg-rail-orange text-white shadow-md"
               initial={{ top: 0 }}
               animate={{ top: `calc(${progress}% - 12px)` }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -118,7 +118,7 @@ export default function LiveStatus() {
               <TrainFront size={14} />
             </motion.div>
 
-            <div className="space-y-6">
+            <div className="space-y-6 pl-8">
               {status.route.map((stop, i) => (
                 <motion.div
                   key={stop.code}
@@ -128,18 +128,18 @@ export default function LiveStatus() {
                   className="relative"
                 >
                   <div
-                    className={`absolute -left-6 top-1 h-3 w-3 rounded-full border-2 ${
+                    className={`absolute left-[14px] top-1.5 h-3 w-3 -translate-x-1/2 rounded-full border-2 ${
                       stop.status === "CURRENT"
-                        ? "border-rail-orange bg-white"
+                        ? "border-rail-orange bg-white dark:bg-gray-800"
                         : stop.status === "DEPARTED"
-                        ? "border-gray-300 bg-gray-300"
-                        : "border-gray-300 bg-white"
+                        ? "border-gray-300 dark:border-gray-600 bg-gray-300 dark:border-gray-600 dark:bg-gray-600"
+                        : "border-gray-300 dark:border-gray-600 bg-white dark:border-gray-600 dark:bg-gray-800"
                     }`}
                   />
-                  <p className={`font-semibold ${stop.status === "CURRENT" ? "text-rail-orange" : "text-gray-800"}`}>
+                  <p className={`font-semibold ${stop.status === "CURRENT" ? "text-rail-orange" : "text-gray-800 dark:text-gray-100"}`}>
                     {stop.name} ({stop.code})
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">
                     {stop.scheduledTime} · {stop.distanceKm} km
                     {stop.platform ? ` · Platform ${stop.platform}` : ""}
                     {stop.status === "CURRENT" ? " · Currently here" : ""}

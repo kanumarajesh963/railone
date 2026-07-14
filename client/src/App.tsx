@@ -78,8 +78,8 @@ export default function App() {
           </Routes>
         </AnimatePresence>
       </main>
-      <footer className="border-t border-gray-200 bg-white py-4 text-center text-xs text-gray-400">
-        RailOne — demo platform combining reserved booking, UTS unreserved ticketing &amp; live status. Not affiliated with Indian Railways/IRCTC.
+      <footer className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 py-4 text-center text-xs text-gray-400 dark:text-gray-500">
+        RailAll — demo platform combining reserved booking, UTS unreserved ticketing &amp; live status. Not affiliated with Indian Railways/IRCTC.
       </footer>
     </div>
   );

@@ -79,6 +79,24 @@ export function getTrainByNumber(number) {
 const bookings = new Map();
 let pnrCounter = 4267198000;
 
+// Fixed demo PNR so there's always a guaranteed-working test booking,
+// independent of the in-memory counter (which resets on every redeploy).
+bookings.set("4267198100", {
+  pnr: "4267198100",
+  trainNumber: "12951",
+  trainName: "Mumbai Rajdhani",
+  from: "NDLS",
+  to: "BCT",
+  date: "2026-07-20",
+  classCode: "3A",
+  contact: { name: "Demo User", mobile: "9999999999" },
+  passengers: [
+    { name: "Demo Passenger", age: 30, gender: "M", id: 1, status: "CNF", seat: "B3/42" },
+  ],
+  chartPrepared: true,
+  bookedAt: new Date().toISOString(),
+});
+
 export function createBooking({ trainNumber, classCode, date, passengers, contact }) {
   const train = getTrainByNumber(trainNumber);
   pnrCounter += 1;

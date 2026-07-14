@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, TrainFront, X } from "lucide-react";
+import { Menu, Moon, Sun, TrainFront, X } from "lucide-react";
 
 const links = [
   { to: "/", label: "Book Ticket" },
@@ -10,9 +10,21 @@ const links = [
   { to: "/live", label: "Live Status" },
 ];
 
+function getInitialDarkMode() {
+  const stored = localStorage.getItem("railall-theme");
+  if (stored) return stored === "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(getInitialDarkMode);
   const location = useLocation();
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("railall-theme", dark ? "dark" : "light");
+  }, [dark]);
 
   return (
     <header
@@ -30,7 +42,7 @@ export default function Navbar() {
             <TrainFront size={20} />
           </motion.span>
           <span>
-            Rail<span className="text-rail-orange">One</span>
+            Rail<span className="text-rail-orange">all</span>
           </span>
         </Link>
 
@@ -56,13 +68,34 @@ export default function Navbar() {
           })}
         </nav>
 
-        <button
-          className="flex h-11 w-11 items-center justify-center md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle navigation"
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setDark((v) => !v)}
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+            className="flex h-11 w-11 items-center justify-center rounded-full hover:bg-white/10"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={dark ? "sun" : "moon"}
+                initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
+                transition={{ duration: 0.2 }}
+                className="flex"
+              >
+                {dark ? <Sun size={18} /> : <Moon size={18} />}
+              </motion.span>
+            </AnimatePresence>
+          </button>
+
+          <button
+            className="flex h-11 w-11 items-center justify-center md:hidden"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle navigation"
+          >
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

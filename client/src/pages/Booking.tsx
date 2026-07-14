@@ -21,6 +21,7 @@ export default function Booking() {
   const [contact, setContact] = useState({ name: "", mobile: "" });
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchTrain(trainNumber).then(setTrain).catch(() => setError("Train not found"));
@@ -43,12 +44,17 @@ export default function Booking() {
   }
 
   function validatePassengers() {
-    if (!passengers.every((p) => p.name.trim().length > 1 && p.age > 0)) {
-      setError("Please fill valid name and age for every passenger");
-      return false;
-    }
-    if (!contact.name || !/^\d{10}$/.test(contact.mobile)) {
-      setError("Please provide contact name and a valid 10-digit mobile number");
+    const errs: Record<string, string> = {};
+    passengers.forEach((p, i) => {
+      if (!p.name.trim() || p.name.trim().length < 2) errs[`name-${i}`] = "Enter a valid name";
+      if (!p.age || p.age <= 0) errs[`age-${i}`] = "Enter a valid age";
+    });
+    if (!contact.name.trim()) errs.contactName = "Contact name is required";
+    if (!/^\d{10}$/.test(contact.mobile)) errs.contactMobile = "Enter a valid 10-digit mobile number";
+
+    setFieldErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      setError("Please fix the highlighted fields below");
       return false;
     }
     setError("");
@@ -75,11 +81,11 @@ export default function Booking() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 pb-28 sm:pb-8">
       {train && (
-        <div className="mb-6 rounded-2xl bg-white p-4 shadow-sm">
+        <div className="mb-6 rounded-2xl bg-white dark:bg-gray-800 p-4 shadow-sm">
           <p className="font-semibold text-rail-blue">
             {train.name} · #{train.number}
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
             {train.from} {train.departure} → {train.to} {train.arrival} · {date}
           </p>
           {selectedClass && (
@@ -102,16 +108,21 @@ export default function Booking() {
             className="space-y-4"
           >
             {passengers.map((p, i) => (
-              <div key={i} className="rounded-xl border border-gray-200 bg-white p-4">
+              <div key={i} className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
                 <div className="flex items-end gap-2">
                   <label className="flex-1">
-                    <span className="text-xs font-semibold text-gray-500">Full Name</span>
+                    <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Full Name</span>
                     <input
                       value={p.name}
                       onChange={(e) => updatePassenger(i, { name: e.target.value })}
-                      className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+                      className={`mt-1 w-full rounded-lg border px-3 py-2 ${
+                        fieldErrors[`name-${i}`] ? "border-red-400 focus:border-red-500" : "border-gray-300 dark:border-gray-600"
+                      }`}
                       placeholder="Passenger name"
                     />
+                    {fieldErrors[`name-${i}`] && (
+                      <p className="mt-1 text-xs font-medium text-red-600">{fieldErrors[`name-${i}`]}</p>
+                    )}
                   </label>
                   {passengers.length > 1 && (
                     <button
@@ -123,24 +134,29 @@ export default function Booking() {
                     </button>
                   )}
                 </div>
-                <div className="mt-3 grid grid-cols-2 gap-3 sm:flex sm:items-end">
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:flex sm:items-start">
                   <label className="sm:w-20">
-                    <span className="text-xs font-semibold text-gray-500">Age</span>
+                    <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Age</span>
                     <input
                       type="number"
                       min={1}
                       max={120}
                       value={p.age}
                       onChange={(e) => updatePassenger(i, { age: Number(e.target.value) })}
-                      className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+                      className={`mt-1 w-full rounded-lg border px-3 py-2 ${
+                        fieldErrors[`age-${i}`] ? "border-red-400 focus:border-red-500" : "border-gray-300 dark:border-gray-600"
+                      }`}
                     />
+                    {fieldErrors[`age-${i}`] && (
+                      <p className="mt-1 text-xs font-medium text-red-600">{fieldErrors[`age-${i}`]}</p>
+                    )}
                   </label>
                   <label className="sm:w-24">
-                    <span className="text-xs font-semibold text-gray-500">Gender</span>
+                    <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Gender</span>
                     <select
                       value={p.gender}
                       onChange={(e) => updatePassenger(i, { gender: e.target.value })}
-                      className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+                      className="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2"
                     >
                       <option value="M">Male</option>
                       <option value="F">Female</option>
@@ -158,22 +174,36 @@ export default function Booking() {
               <Plus size={16} /> Add passenger
             </button>
 
-            <div className="rounded-xl border border-gray-200 bg-white p-4">
-              <p className="mb-2 text-sm font-semibold text-gray-500">Contact details</p>
+            <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+              <p className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">Contact details</p>
               <div className="flex flex-wrap gap-3">
-                <input
-                  value={contact.name}
-                  onChange={(e) => setContact((c) => ({ ...c, name: e.target.value }))}
-                  placeholder="Contact name"
-                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2"
-                />
-                <input
-                  value={contact.mobile}
-                  onChange={(e) => setContact((c) => ({ ...c, mobile: e.target.value.replace(/\D/g, "") }))}
-                  placeholder="Mobile number"
-                  maxLength={10}
-                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2"
-                />
+                <div className="min-w-[140px] flex-1">
+                  <input
+                    value={contact.name}
+                    onChange={(e) => setContact((c) => ({ ...c, name: e.target.value }))}
+                    placeholder="Contact name"
+                    className={`w-full rounded-lg border px-3 py-2 ${
+                      fieldErrors.contactName ? "border-red-400 focus:border-red-500" : "border-gray-300 dark:border-gray-600"
+                    }`}
+                  />
+                  {fieldErrors.contactName && (
+                    <p className="mt-1 text-xs font-medium text-red-600">{fieldErrors.contactName}</p>
+                  )}
+                </div>
+                <div className="min-w-[140px] flex-1">
+                  <input
+                    value={contact.mobile}
+                    onChange={(e) => setContact((c) => ({ ...c, mobile: e.target.value.replace(/\D/g, "") }))}
+                    placeholder="Mobile number"
+                    maxLength={10}
+                    className={`w-full rounded-lg border px-3 py-2 ${
+                      fieldErrors.contactMobile ? "border-red-400 focus:border-red-500" : "border-gray-300 dark:border-gray-600"
+                    }`}
+                  />
+                  {fieldErrors.contactMobile && (
+                    <p className="mt-1 text-xs font-medium text-red-600">{fieldErrors.contactMobile}</p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -181,7 +211,7 @@ export default function Booking() {
 
             <div className="h-2 sm:hidden" />
             <div
-              className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white p-4 sm:static sm:border-0 sm:bg-transparent sm:p-0"
+              className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 sm:static sm:border-0 sm:bg-transparent sm:p-0"
               style={{ paddingBottom: "max(env(safe-area-inset-bottom), 1rem)" }}
             >
               <button
@@ -202,18 +232,18 @@ export default function Booking() {
             exit={{ opacity: 0, x: -20 }}
             className="space-y-4"
           >
-            <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
               <p className="mb-2 font-semibold text-rail-blue">Passengers</p>
               {passengers.map((p, i) => (
-                <div key={i} className="flex justify-between border-b border-gray-100 py-2 text-sm last:border-0">
+                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-700 py-2 text-sm last:border-0">
                   <span>{p.name}</span>
-                  <span className="text-gray-500">
+                  <span className="text-gray-500 dark:text-gray-400 dark:text-gray-500">
                     {p.age} yrs · {p.gender}
                   </span>
                 </div>
               ))}
             </div>
-            <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
               <p className="mb-2 font-semibold text-rail-blue">Contact</p>
               <p className="text-sm">{contact.name} · {contact.mobile}</p>
             </div>
@@ -224,7 +254,7 @@ export default function Booking() {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(0)}
-                className="flex-1 rounded-lg border border-gray-300 py-3 font-semibold text-gray-600 hover:bg-gray-50"
+                className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 py-3 font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:bg-gray-700"
               >
                 Back
               </button>
@@ -246,10 +276,10 @@ export default function Booking() {
             exit={{ opacity: 0, x: -20 }}
             className="space-y-4"
           >
-            <div className="rounded-xl border border-gray-200 bg-white p-6 text-center">
-              <p className="text-sm text-gray-500">Amount payable</p>
+            <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 text-center">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">Amount payable</p>
               <p className="text-3xl font-bold text-rail-blue">₹{totalFare}</p>
-              <p className="mt-1 text-xs text-gray-400">Simulated payment — no real transaction occurs</p>
+              <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">Simulated payment — no real transaction occurs</p>
             </div>
             {error && <p className="text-sm font-medium text-red-600">{error}</p>}
             <motion.button

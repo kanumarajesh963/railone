@@ -35,7 +35,7 @@ export default function PnrStatus() {
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
       <h1 className="text-2xl font-bold text-rail-blue">PNR Status</h1>
-      <p className="text-gray-500">Enter your 10-digit PNR number to check booking status</p>
+      <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Enter your 10-digit PNR number to check booking status</p>
 
       <form onSubmit={handleSearch} className="mt-6 flex gap-2">
         <input
@@ -43,7 +43,7 @@ export default function PnrStatus() {
           onChange={(e) => setPnr(e.target.value.replace(/\D/g, ""))}
           placeholder="e.g. 4267198001"
           maxLength={12}
-          className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-rail-blue focus:outline-none"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-3 focus:border-rail-blue focus:outline-none"
         />
         <motion.button
           whileTap={{ scale: 0.95 }}
@@ -68,7 +68,7 @@ export default function PnrStatus() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+            className="mt-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-rail-blue">
@@ -82,7 +82,7 @@ export default function PnrStatus() {
                 label={booking.chartPrepared ? "Chart Prepared" : "Chart Not Prepared"}
               />
             </div>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
               {booking.from} → {booking.to} · {booking.date} · Class {booking.classCode}
             </p>
             <div className="mt-4 divide-y divide-gray-100">
@@ -90,7 +90,7 @@ export default function PnrStatus() {
                 <div key={p.id} className="flex items-center justify-between py-2">
                   <div>
                     <p className="text-sm font-medium">{p.name}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">
                       {p.age} yrs · {p.gender} {p.seat ? `· Seat ${p.seat}` : ""}
                     </p>
                   </div>

@@ -18,14 +18,14 @@ export default function TrainCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06, duration: 0.4, ease: "easeOut" }}
       whileHover={{ y: -3 }}
-      className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-lg"
+      className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm transition-shadow hover:shadow-lg"
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="text-lg font-semibold text-rail-blue">{train.name}</h3>
-          <p className="text-sm text-gray-500">#{train.number}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">#{train.number}</p>
         </div>
-        <div className="flex items-center gap-1 text-sm text-gray-500">
+        <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
           <Clock size={14} />
           {train.duration}
         </div>
@@ -34,7 +34,7 @@ export default function TrainCard({
       <div className="mt-4 flex items-center justify-between gap-4">
         <div className="text-center">
           <p className="text-xl font-bold">{train.departure}</p>
-          <p className="text-xs text-gray-500">{train.from}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{train.from}</p>
         </div>
         <div className="relative flex-1">
           <div className="h-0.5 w-full bg-gray-200" />
@@ -47,7 +47,7 @@ export default function TrainCard({
         </div>
         <div className="text-center">
           <p className="text-xl font-bold">{train.arrival}</p>
-          <p className="text-xs text-gray-500">{train.to}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">{train.to}</p>
         </div>
       </div>
 
@@ -56,11 +56,11 @@ export default function TrainCard({
           <button
             key={cls.code}
             onClick={() => onSelect(cls.code)}
-            className="flex items-center justify-between rounded-xl border border-gray-200 px-3 py-2 text-left transition hover:border-rail-blue hover:bg-rail-blue/5"
+            className="flex items-center justify-between rounded-xl border border-gray-200 dark:border-gray-700 px-3 py-2 text-left transition hover:border-rail-blue hover:bg-rail-blue/5"
           >
             <div>
               <p className="text-sm font-semibold">{cls.name}</p>
-              <p className="text-xs text-gray-500">₹{cls.fare}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">₹{cls.fare}</p>
             </div>
             <StatusBadge
               status={cls.status}

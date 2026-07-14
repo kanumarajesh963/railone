@@ -33,20 +33,20 @@ export default function SearchResults() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6 flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm">
+      <div className="mb-6 flex items-center gap-3 rounded-2xl bg-white dark:bg-gray-800 p-4 shadow-sm">
         <span className="rounded-xl bg-rail-blue/10 p-2 text-rail-blue">
           <TrainFront />
         </span>
         <div>
           <p className="font-semibold">
-            {from} <span className="text-gray-400">→</span> {to}
+            {from} <span className="text-gray-400 dark:text-gray-500">→</span> {to}
           </p>
-          <p className="text-sm text-gray-500">{date}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">{date}</p>
         </div>
       </div>
 
       {loading && (
-        <div className="flex flex-col items-center justify-center gap-2 py-16 text-gray-500">
+        <div className="flex flex-col items-center justify-center gap-2 py-16 text-gray-500 dark:text-gray-400 dark:text-gray-500">
           <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
             <Loader2 />
           </motion.span>
@@ -57,7 +57,7 @@ export default function SearchResults() {
       {!loading && error && <p className="rounded-xl bg-red-50 p-4 text-red-600">{error}</p>}
 
       {!loading && !error && trains.length === 0 && (
-        <p className="rounded-xl bg-white p-8 text-center text-gray-500 shadow-sm">
+        <p className="rounded-xl bg-white dark:bg-gray-800 p-8 text-center text-gray-500 dark:text-gray-400 dark:text-gray-500 shadow-sm">
           No trains found for this route on this date.
         </p>
       )}

@@ -61,7 +61,7 @@ export default function UtsBooking() {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 16 }}
-          className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl"
+          className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-xl"
         >
           <div className="flex items-center justify-between bg-rail-green px-5 py-4 text-white">
             <div>
@@ -73,7 +73,7 @@ export default function UtsBooking() {
             <button
               onClick={handleShare}
               aria-label="Share ticket"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15 hover:bg-white/25"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white dark:bg-gray-800/15 hover:bg-white dark:bg-gray-800/25"
             >
               {shared ? <Check size={18} /> : <Share2 size={18} />}
             </button>
@@ -81,10 +81,10 @@ export default function UtsBooking() {
           <div className="p-5">
             <div className="flex items-center justify-between text-sm">
               <span className="font-semibold">{ticket.fromStation}</span>
-              <span className="text-gray-400">→</span>
+              <span className="text-gray-400 dark:text-gray-500">→</span>
               <span className="font-semibold">{ticket.toStation}</span>
             </div>
-            <div className="mt-2 grid grid-cols-2 gap-2 text-sm text-gray-500">
+            <div className="mt-2 grid grid-cols-2 gap-2 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
               <p>Passengers: {ticket.passengers}</p>
               <p>Distance: {ticket.distanceKm} km</p>
               <p>Fare/person: ₹{ticket.farePerPassenger}</p>
@@ -98,10 +98,10 @@ export default function UtsBooking() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="mt-5 flex flex-col items-center gap-2 border-t border-dashed border-gray-300 pt-5"
+              className="mt-5 flex flex-col items-center gap-2 border-t border-dashed border-gray-300 dark:border-gray-600 pt-5"
             >
               <QRCode value={JSON.stringify(ticket)} size={140} />
-              <p className="text-xs text-gray-400">Show this QR code to the ticket checker</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500">Show this QR code to the ticket checker</p>
             </motion.div>
           </div>
         </motion.div>
@@ -126,15 +126,15 @@ export default function UtsBooking() {
         </span>
         <h1 className="text-2xl font-bold text-rail-blue">UTS Unreserved Ticket</h1>
       </div>
-      <p className="text-gray-500">Instant, paperless unreserved or platform ticket — no queue, no seat allotment.</p>
+      <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Instant, paperless unreserved or platform ticket — no queue, no seat allotment.</p>
 
-      <div className="mt-6 flex gap-2 rounded-xl bg-gray-100 p-1">
+      <div className="mt-6 flex gap-2 rounded-xl bg-gray-100 dark:bg-gray-700 p-1">
         {(["journey", "platform"] as const).map((type) => (
           <button
             key={type}
             onClick={() => setTicketType(type)}
             className={`relative flex-1 rounded-lg py-2 text-sm font-semibold transition ${
-              ticketType === type ? "text-white" : "text-gray-500"
+              ticketType === type ? "text-white" : "text-gray-500 dark:text-gray-400 dark:text-gray-500"
             }`}
           >
             {ticketType === type && (
@@ -149,15 +149,15 @@ export default function UtsBooking() {
         ))}
       </div>
 
-      <div className="mt-6 space-y-4 rounded-2xl border border-gray-200 bg-white p-5">
+      <div className="mt-6 space-y-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5">
         <label className="block">
-          <span className="text-xs font-semibold text-gray-500">
+          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">
             {ticketType === "platform" ? "STATION" : "FROM STATION"}
           </span>
           <select
             value={fromStation}
             onChange={(e) => setFromStation(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2"
           >
             {stations.map((s) => (
               <option key={s.code} value={s.code}>
@@ -175,11 +175,11 @@ export default function UtsBooking() {
               exit={{ opacity: 0, height: 0 }}
               className="block overflow-hidden"
             >
-              <span className="text-xs font-semibold text-gray-500">TO STATION</span>
+              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">TO STATION</span>
               <select
                 value={toStation}
                 onChange={(e) => setToStation(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
+                className="mt-1 w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2"
               >
                 {stations.map((s) => (
                   <option key={s.code} value={s.code}>
@@ -191,24 +191,37 @@ export default function UtsBooking() {
           )}
         </AnimatePresence>
 
-        <div>
-          <span className="text-xs font-semibold text-gray-500">PASSENGERS</span>
-          <div className="mt-1 flex items-center justify-between">
-            <button
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">PASSENGERS</span>
+          <div className="flex items-center gap-4">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
               onClick={() => setPassengers((n) => Math.max(1, n - 1))}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-50"
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:bg-gray-700"
               aria-label="Decrease passengers"
             >
-              <Minus size={14} />
-            </button>
-            <span className="text-lg font-semibold">{passengers}</span>
-            <button
+              <Minus size={16} />
+            </motion.button>
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span
+                key={passengers}
+                initial={{ opacity: 0, y: 8, scale: 0.7 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.7 }}
+                transition={{ duration: 0.18 }}
+                className="w-6 text-center text-lg font-semibold"
+              >
+                {passengers}
+              </motion.span>
+            </AnimatePresence>
+            <motion.button
+              whileTap={{ scale: 0.9 }}
               onClick={() => setPassengers((n) => Math.min(10, n + 1))}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-50"
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:bg-gray-700"
               aria-label="Increase passengers"
             >
-              <Plus size={14} />
-            </button>
+              <Plus size={16} />
+            </motion.button>
           </div>
         </div>
 

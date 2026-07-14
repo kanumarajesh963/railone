@@ -74,17 +74,17 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             onSubmit={handleSubmit}
-            className="mt-8 rounded-2xl bg-white p-4 text-gray-800 shadow-2xl sm:p-6"
+            className="mt-8 rounded-2xl bg-white dark:bg-gray-800 p-4 text-gray-800 dark:text-gray-100 shadow-2xl sm:p-6"
           >
-            <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr_1fr_auto]">
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr_1fr_auto] sm:gap-4">
               <label className="block">
-                <span className="mb-1 flex items-center gap-1 text-xs font-semibold text-gray-500">
+                <span className="mb-1 flex items-center gap-1 text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   <MapPin size={12} /> FROM
                 </span>
                 <select
                   value={from}
                   onChange={(e) => setFrom(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-rail-blue focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-rail-blue focus:outline-none"
                 >
                   {stations.map((s) => (
                     <option key={s.code} value={s.code}>
@@ -94,13 +94,13 @@ export default function Home() {
                 </select>
               </label>
 
-              <div className="flex items-end justify-center pb-2 sm:pb-0">
+              <div className="flex items-center justify-center sm:items-end sm:pb-0">
                 <motion.button
                   type="button"
                   onClick={swap}
                   whileTap={{ rotate: 180 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-gray-500 transition hover:border-rail-blue hover:text-rail-blue sm:h-9 sm:w-9"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 dark:text-gray-500 transition hover:border-rail-blue hover:text-rail-blue sm:h-9 sm:w-9"
                   aria-label="Swap stations"
                 >
                   <ArrowLeftRight size={16} className="rotate-90 sm:rotate-0" />
@@ -108,13 +108,13 @@ export default function Home() {
               </div>
 
               <label className="block">
-                <span className="mb-1 flex items-center gap-1 text-xs font-semibold text-gray-500">
+                <span className="mb-1 flex items-center gap-1 text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   <MapPin size={12} /> TO
                 </span>
                 <select
                   value={to}
                   onChange={(e) => setTo(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-rail-blue focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-rail-blue focus:outline-none"
                 >
                   {stations.map((s) => (
                     <option key={s.code} value={s.code}>
@@ -125,7 +125,7 @@ export default function Home() {
               </label>
 
               <label className="block">
-                <span className="mb-1 flex items-center gap-1 text-xs font-semibold text-gray-500">
+                <span className="mb-1 flex items-center gap-1 text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   <CalendarDays size={12} /> DATE
                 </span>
                 <input
@@ -133,7 +133,7 @@ export default function Home() {
                   min={today()}
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-rail-blue focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-rail-blue focus:outline-none"
                 />
               </label>
 
@@ -166,14 +166,14 @@ export default function Home() {
                 transition={{ delay: i * 0.08 }}
                 whileHover={{ y: -4, scale: 1.01 }}
                 onClick={() => navigate(item.to)}
-                className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-white p-5 text-left shadow-sm transition hover:shadow-lg"
+                className="flex items-start gap-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 text-left shadow-sm transition hover:shadow-lg"
               >
                 <span className="rounded-xl bg-rail-blue/10 p-3 text-rail-blue">
                   <Icon size={22} />
                 </span>
                 <span>
                   <p className="font-semibold">{item.label}</p>
-                  <p className="text-sm text-gray-500">{item.desc}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">{item.desc}</p>
                 </span>
               </motion.button>
             );

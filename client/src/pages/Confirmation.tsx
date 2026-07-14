@@ -36,7 +36,7 @@ export default function Confirmation() {
           <CheckCircle2 size={48} />
         </motion.div>
         <h1 className="text-2xl font-bold text-rail-blue">Booking Confirmed!</h1>
-        <p className="text-gray-500">Your PNR is</p>
+        <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500">Your PNR is</p>
         <p className="mt-1 text-3xl font-extrabold tracking-widest text-rail-orange">{booking.pnr}</p>
       </motion.div>
 
@@ -44,7 +44,7 @@ export default function Confirmation() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="mt-8 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+        className="mt-8 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm"
       >
         <div className="flex items-center gap-2 text-rail-blue">
           <TrainFront size={18} />
@@ -52,7 +52,7 @@ export default function Confirmation() {
             {booking.trainName} · #{booking.trainNumber}
           </p>
         </div>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
           {booking.from} → {booking.to} · {booking.date} · Class {booking.classCode}
         </p>
 
@@ -61,7 +61,7 @@ export default function Confirmation() {
             <div key={p.id} className="flex items-center justify-between py-2">
               <div>
                 <p className="text-sm font-medium">{p.name}</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   {p.age} yrs · {p.gender} {p.seat ? `· Seat ${p.seat}` : ""}
                 </p>
               </div>
